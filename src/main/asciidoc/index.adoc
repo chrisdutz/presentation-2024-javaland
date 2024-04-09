@@ -1,0 +1,620 @@
+////
+
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+////
+
+include::_settings.adoc[]
+:presenter_name: Christofer Dutz
+:presenter_company: Timecho Europe GmbH
+:description: MES Systeme auf Basis von Java (Micro-)Services
+:keywords: IIoT, IoT
+:author: Christofer Dutz
+:email: christofer.dutz@timecho.com
+:position: Solution Consulting Expert
+
+// 40 minutes - 5 minutes Q&A = 2400 seconds
+:revealjs_totalTime: 2100
+
+== !
+
+image::Nurburgring.jpg[canvas]
+
+[.talkTitle]
+****
+
+[.mainTitle]
+MES Systeme auf Basis von Java (Micro-)Services
+[.subTitle]
+Wie wir die Automatisierungsindustrie retten könnten
+
+[.speaker]
+Christofer Dutz, Timecho
+****
+
+[.conferenceName]
+JavaLand
+
+[.year]
+09.04.2024
+
+[NOTE.speaker]
+--
+--
+
+== Wer bin ich?
+
+image::christofer-dutz.jpg[float=right,width=300]
+
+* Christofer Dutz
+* Senior IoT Software Architect
+* Timecho Europe GmbH
+* Open-Source Abhängiger
+* Committer in 15 Apache Projekten
+* VP von Apache PLC4X
+* Member der ASF
+* Seit 2021 einer der 9 Direktoren der ASF
+* LinkedIn: link:https://www.linkedin.com/in/christofer-dutz/[christofer-dutz]
+
+[NOTE.speaker]
+--
+* Lasse diese Folie normalerweise mittlerweile weg, nur war ich noch nie als Speaker auf der Javaland.
+* In den meißten davon auch mitglied des PMCs
+* Habe 2017 Apache PLC4X initiiert, dank codecentric
+* Drittes Jahr als Direktor
+--
+
+== Hinweis
+
+* Präsentation erstellt mit Apache Training
+** https://training.apache.org
+* In Asciidoctor geschrieben
+* Via Maven in RevealJS Präsentation kompiliert
+* Nicht ganz so hübsch
+* Total open-source ;-)
+
+[NOTE.speaker]
+--
+* Lediglich die Fotos sind Stockpictures um Zeit zu sparen
+* Muss noch ein wenig mehr lernen sie von AI generieren zu lassen
+* Stelle die Quellen dann ohne stockpictures online
+--
+
+== Wer seid ihr?
+
+* Wer von euch hat schon:
+** In der Automatisierungsindustrie gearbeitet?
+** Kennst sich mit den Software-Lösungen der OT Welt aus?
+** Kennt sich mit PLCs/SPSen und deren Ökosystemen aus?
+** Kennt/Hat schon mal gehört von:
+*** Apache PLC4X
+*** Apache IoTDB
+*** Apache TsFile
+
+[NOTE.speaker]
+--
+* OT = Operational Technology
+** IT der Automatisierung
+** Kümmern sich um die Konfiguration und Betrieb der Automatisieungslösungen
+--
+
+== Übersicht
+
+* Vergleich der Produktion früher und heute
+* Was sind die Herausforderungen?
+* Wie könnte man diese theoretisch Lösen?
+* Wie können wir diese praktisch Lösen?
+
+[NOTE.speaker]
+--
+--
+
+== Beispiel: Autoindustrie
+
+image::Autoindustrie.jpg[canvas]
+
+[NOTE.speaker]
+--
+* Stellvertretend für alle Industrien
+--
+
+== Situation in der Produktion früher
+
+image::VW-Kaefer.jpg[canvas]
+
+== Situation in der Produktion früher
+
+* 1964
+** VW Käfer: 3 Varianten
+* Manuelles "Umrüsten"
+
+[NOTE.speaker]
+--
+* "Umrüsten" = Produktion wurde auf ein Modell eingestellt
+* Dann wurde für X Tage dieses Modell gebaut
+* Danach Umrüsten auf das nächste Modell
+* Effektiv kein MES Nötig
+* MES = Manufacturing Execution System
+--
+
+== Situation in der Produktion in den 90ern
+
+image::VW-Golf-1.jpg[canvas]
+
+== Situation in der Produktion in den 90ern
+
+* 1990er
+** VW Golf:
+** Überschaubare Modellpalette
+* Einführung von MES-Systemen
+** Umrüsten via Konfiguration
+
+[NOTE.speaker]
+--
+* MES = Manufacturing Execution System
+* MES teilt Automatisierung mit, was produziert wird
+--
+
+== Situation in der Produktion heute
+
+image::VW-Golf.jpg[canvas]
+
+== Situation in der Produktion heute
+
+* 2024
+** VW Golf 8:
+*** 31 Varianten
+*** Individuelle Konfiguration von 1000 Optionen
+
+[NOTE.speaker]
+--
+* Individuelle Konfiguration führt zu effektiver Varianten-zahl in den zehntausenden.
+* Habe mal an dem Konfigurationssystem gearbeitet
+** Einfache Konfigurationsoptionen führen zu unheimlich komplexen Anpassungen
+** Mit Klimaanlage -> Mehr Gewicht -> Stärkere Federn einbauen
+* MES teilt Teilweise mit, mit wie viel Newtonmetern welche Schraube angezogen werden muss.
+--
+
+== Situation in der Produktion heute
+
+image::Golf-Varianten.jpeg[canvas]
+
+== Automatisierung in den 90ern
+
+[svgbob,automatisierungspyramide-damals,height=600]
+....
+
+
+                     /\
+                    /  \                        ERP = Enterprise Resource Planning
+                   /    \
+                  +------+
+                 /        \
+                /   MES    \                    MES = Manufacturing Execution System
+               /            \
+              +--------------+
+             /                \
+            /      SCADA       \              SCADA = Supervisory Control and Data Acquisition
+           /                    \
+          +----------------------+
+         /                        \
+        /           PLC            \            PLC = Programmable Logic Controller
+       /                            \
+      +------------------------------+
+     /                                \
+    /         Sensors & Actors         \        Sensors & Actors
+   /                                    \
+  +--------------------------------------+
+
+....
+
+[NOTE.speaker]
+--
+* Automatisierungspyramide
+** Jede Schicht kommuniziert nur mit der jeweils direkt angrenzenden Schicht
+** Unten: Sensoren/Aktoren
+** PLC: Steuern die eigentliche Maschine
+** SCADA: Überwachen die Betriebsparameter der Maschine
+** MES: Teilen der Maschine mit, was Produziert wird
+** ERP: Teilen der Produktionsplanung, was bestellt wurde
+* Ab SCADA, in der regel alles monolithische Windows Anwendungen
+--
+
+== Automatisierung Heute
+
+[svgbob,automatisierungspyramide-heute,height=600]
+....
+
+
+                     /\
+                    /  \                        ERP = Enterprise Resource Planning
+                   /    \
+                  +------+
+                 /        \
+                /   MES    \                    MES = Manufacturing Execution System
+               /            \
+              +--------------+
+             /                \
+            /      SCADA       \              SCADA = Supervisory Control and Data Acquisition
+           /                    \
+          +----------------------+
+         /                        \
+        /           PLC            \            PLC = Programmable Logic Controller
+       /                            \
+      +------------------------------+
+     /                                \
+    /         Sensors & Actors         \        Sensors & Actors
+   /                                    \
+  +--------------------------------------+
+
+....
+
+[NOTE.speaker]
+--
+* Kein Witz
+* Neuere Windows Versionen
+* Neuere Computer-Hardware
+--
+
+== Automatisierung Heute: Industrie 4.0
+
+[svgbob,automatisierungspyramide-i40,height=600]
+....
+           +-------+
+           |       |      /\
+           | I4.0  |     /  \
+           |       |    /    \                        ERP = Enterprise Resource Planning
+           +-------+   /  ERP \
+            \       \ +--------+
+             \       \          \
+              \       \   MES    \                    MES = Manufacturing Execution System
+               \       \          \
+                +       +----------+
+               / \       \          \
+              /   \       \   SCADA  \              SCADA = Supervisory Control and Data Acquisition
+             /    |   ^   |           \
+            +-----+   |   +------------+
+           /      |       |             \
+          /       +-------+    PLC       \            PLC = Programmable Logic Controller
+         /                                \
+        +----------------------------------+
+       /                                    \
+      /            Sensors & Actors          \        Sensors & Actors
+     /                                        \
+    +------------------------------------------+
+
+....
+
+[NOTE.speaker]
+--
+* Einziger unterschied: Viele Systeme müssen nun sehr viel mehr Daten abliefern für I4.0 Use-Cases.
+* Dank Automatisierungspyramide, müssen oft mehrere Systeme angepasst werden, um neue Daten nach oben weiterzuleiten.
+--
+
+== Automatisierung Heute: Industrie 4.0
+
+[svgbob,automatisierungspyramide-heute-quick,height=600]
+....
+                     /\
+                    /  \                        ERP = Enterprise Resource Planning
+                   /    \
+                  +------+
+                 /        \
+   +------+     /   MES    \                    MES = Manufacturing Execution System
+   |      |    /            \
+   | I4.0 |   +--------------+
+   |      |  /                \
+   +------+ /      SCADA       \              SCADA = Supervisory Control and Data Acquisition
+    \      \                    \
+     \      \--------------------+
+      \      \                    \
+       \            PLC            \            PLC = Programmable Logic Controller
+       /\                           \
+      +------------------------------+
+     /                                \
+    /         Sensors & Actors         \        Sensors & Actors
+   /                                    \
+  +--------------------------------------+
+....
+
+[NOTE.speaker]
+--
+* Wesentlich üblicher
+* Wie vorher, nur direkter Zugriff auf die Hardware
+* Üblicherweise um Lizenzgebühren und Anpassungen im SCADA & MES zu sparen
+--
+
+== Typische Herausforderungen der Industrie
+
+* Endkunden wollen ihr Produkt individualisieren
+** Stichwort: Losgröße-1
+* Zusätzlich sollen immer mehr Daten gewonnen und verarbeitet werden
+** Industrie 4.0: Predictive Maintenance, Machine learning
+* Durch die monolithische Struktur der MES-Systeme kommen die Systeme an ihre Grenzen.
+* SPSen/PLCs teils sehr überlastet durch extrem hohe Anzahl von Anfragen (Werte werden teils mehrfach abgefragt)
+* Überlast -> Extrem Kritisch
+
+[NOTE.speaker]
+--
+* Losgröße-1 Bedeutet
+** Jedes Produkt ist eine Individualanfertigung
+** Die Produktionstechnik muss im schlimmsten Fall für jedes einzelne Produkt "gerüstet" werden
+* Industrie 4.0:
+** "Wir sammeln mal alle Daten, vielleicht fällt uns in einem Jahr ein, was wir damit machen"
+** Verarbeiten von Daten in höheren ebenen der Pyramide erfordert anpassung und verarbeitung in den darunter liegenden ebenen
+** Nutzung von klassischen relationalen Datenbanken (Oracle, MS SQL) für Zeitserien Analysen
+* Kritische Probleme:
+** Überlastung der Systeme
+*** PLC geht in "Störung" wenn zu viel Last
+*** Erhöhte Reaktionszeiten
+*** Rest: Typische Thrashing Situationen
+** Führt zu:
+*** Verzögerungen in der Produktion
+*** Stillstand der Produktion
+* Bei einigen Herstellern gesehen, was das zu bedeuten hat -> Nur geringe Möglichkeiten andere Teilbereiche weiter produzieren zu lassen
+* Einzige Lösung: Noch stärkere und teurere Server
+--
+
+== Wie könnte man diese theoretisch Lösen?
+
+image::Enterprise-Integration-Patterns.jpg[height=600px]
+
+[NOTE.speaker]
+--
+* Konnte nicht widerstehen ;-)
+* Apache Camel Fans werden es sicher kennen
+* Generell kann die Automatisierungsindustrie von all den Erfahrungen, Erfolgen und Fehlern der IT der letzten 30 Jahre lernen
+--
+
+== Wie könnte man diese theoretisch Lösen?
+
+* Verteilte Systeme
+* Standardisierter Datenaustausch
+* Event-Basiertes Messaging
+* Einsatz von geeigneten Datenbanksystemen
+
+[NOTE.speaker]
+--
+* Generell von den Erfahrungen der IT lernen:
+* Verteilte Systeme:
+** Ausfallsicherheit
+** Skalierbarkeit
+** Einsatz von günstigerer Hard-/Software
+* Umstellung von Pull zu Push
+* Lose kopplung der Teilsysteme
+* Daten in der Produktion nie Relationale Daten
+** Immer die Form: Zeitstempel+Werte
+** Analysen: Aggregiere mir mal alle Werte X im Zeitraum von A bis B in einer auflösung von 5 minuten zwingt relationale DBMS schnell in die Knie
+--
+
+== Wie können wir diese praktisch Lösen?
+
+* Unified Namespace
+** Dezentrales Datenrepository
+** Standardisierte Struktur der Daten
+** Publish & Subscribe
+* MQTT / SparkplugB (Nats, Apache Kafka, ...)
+** MQTT = Dezentrales "Datenrepository" & "Pub-Sub"
+** SparkplugB = Standardisierte Struktur
+* Timeseries DB statt Relationale DB
+
+[NOTE.speaker]
+--
+* Statt MQTT: Nats, Kafka, ...
+* MQTT & SparkplugB alleine, leider nur Lösung für Echtzeit-Daten
+* Applikationen müssten hier historische Daten selbst vorhalten
+* Lösung: Zuhilfenahme einer Zeitserien DB
+* OPC-UA: Bin ich kein Fan von (Pub/Sub könnte interessant werden, allerdings muss es sich bei mir erst beweisen)
+--
+
+== Konkretes Lösungsszenario
+
+[svgbob,solution-scenario-1,height=600]
+....
+
+   +-------+       +-------+       +-------+                .-------------.
+   |       |       |       |       |       |   TSDB        |               |
+   | App 1 |       | App 2 |       | App 2 +-------------->|     TSDB      |
+   | SCADA |       | MES   |       |       |   Query       |               |
+   +-------+       +-------+       +-------+                '-------------'
+       ^               ^               ^                           ^
+       |               |               |                           |
+ ------+---------------+---------------+---------------------------+--------------
+                        ^               MQTT               ^              ^
+                        | SparkplugB                       | SparkplugB   |
+                 +------+------+                    +------+------+       |
+                 |             |                    |             |       |
+                 |   Edge GW   |                    |   Edge GW   |       |
+                 |   Line 1    |                    |   Line 2    |       | SparkplugB
+                 +------+------+                    +------+------+       |
+                        |                                  |              |
+                        |   Native Protocols               |              |
+    +---------+---------+---------+---------+         +----+----+         |
+    |         |         |         |         |         |         |         |
+    V         V         V         V         V         V         V         |
++-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+
+|       | |       | |       | |       | |       | |       | |       | |       |
+| PLC 1 | | PLC 2 | | PLC 3 | | PLC 4 | | PLC 5 | | PLC 6 | | PLC 7 | | PLC 8 |
+|       | |       | |       | |       | |       | |       | |       | |       |
++-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+
+....
+
+[NOTE.speaker]
+--
+* PLCs oder Sensoren, welche die unterschiedlichen Industrie Protokolle nutzen
+* Edge Gateway sammelt die benötigten Daten der ihr zugeordneten Anlagen
+* Entkoppelt das Produktionsnetz und das Firmen-Netz
+* Mehrfache Gateways um:
+** Last zu verteilen
+** Strukturelle Gegebenheiten widerzuspiegeln
+* SparkplugB fähige Geräte senden direkt
+* Dieses Szenario ohne die TSDB is quasi HiveMQs offering mit HiveMQ Edge
+* MES & SCADA werden zu gleichberechtigten Teilnehmern
+--
+
+== Nachteile dieses Szenarios
+
+* Anwendungen müssten entweder selbst historische Daten vorhalten oder ein 2. System befragen.
+* SparkplugB erlaubt nur geringfügige Aggregation
+* SparkplugB Message hat einen nicht unerheblichen Netzwerk-Overhead
+
+[NOTE.speaker]
+--
+* Alles mit SparkplugB zu machen, könnte die Last auf dem Firmen-Netz sehr erhöhen.
+--
+
+== Apache Lösungsszenario
+
+* Apache PLC4X für die Gewinnung der Daten
+* Apache IoTDB: Open-Source Time-Series Datenbank
+** Besiegte 2023 in Benchmarks alle Konkurrenten in allen gemessenen Dimensionen
+** Erlaubt neben klassischen TSDB Funktionen auch:
+*** Pipelines: Persistente Queries, die in der DB laufen
+*** Kontinuierliche Replikation (Incl Aggregation)
+*** Operiert als direkter MQTT Client
+
+[NOTE.speaker]
+--
+* HiveMQ Edge nutzt schon Apache PLC4X zur Datengewinnung
+* Pipeline:
+** Anwendung registriert pipeline mit komplexer query, die sich auf historische und aktuelle Daten bezieht
+** Anwendung wird informiert, sowie die Query ein neues Ergebnis hat
+* MQTT Client:
+** SparkplugB support als Client auf meiner TODO-liste
+--
+
+== Apache Lösungsszenario
+
+* Apache TsFile: Storage format von Apache IoTDB
+** Seit 2023 separates Top-Level-Projekt innerhalb der ASF
+** Implementationen in verschiedenen Programmiersprachen
+** Erlaubt das Schreiben von Zeitserien-Daten auf folgenden Systemen:
+*** SPS (Custom Libs für verschiedene SPS Typen)
+*** Edge Gateway
+*** TSDB
+** TsFiles können von Apache IoTDB ohne Post-Processing direkt verarbeitet werden
+
+[NOTE.speaker]
+--
+* TsFile:
+** Hoch-Komprimierte Zeitserien Daten
+*** 1/20 lossless
+*** 1/100 lossfull
+** Enthält Metainformationen
+* Libs für verschiedene SPS Typen stehen auf meiner TODO liste
+** Damit ist kein Pollen mehr von der SPS nötig
+** Zyklus-Synchrone Daten sind kein Problem mehr
+** SPS sendet intervallen aggregierte MQTT Messages mit TsFile Daten als Payload
+--
+
+== Apache Lösungsszenario
+
+[svgbob,solution-scenario-2,height=600]
+....
+
+                              +-------+ +-------+ +-------+
+                              |       | |       | |       |
+                              | App 1 | | App 2 | | App 3 |
+                              |       | |       | |       |
+                              +-------+ +-------+ +-------+
+                                  |         |         |
+                                  V         V         V
+                             .------------------------------.
+                            |                                |
+                            |          Apache IoTDB          |
+                            |                                |
+                             '------------------------------'
+                                  ^                   ^
+                                  | TsFile            | SparkplugB
+ ---------------------------------+-------------------+------------------------------------------
+                        ^               MQTT               ^              ^         ^
+                        | TsFile                           | SparkplugB   |         |
+                 +------+------+                    +------+------+       |         |
+                 |  PLC4X Edge |                    |             |       |         |
+                 |   Gateway   |                    | HiveMQ Edge |       |         |
+                 |   Line 1    |                    |   Line 2    |       | TsFile  |
+                 +------+------+                    +------+------+       |         |
+                        |                                  |              |         | SparkplugB
+      Apache PLC4X      |   Native Protocols               |              |         |
+    +---------+---------+---------+---------+         +----+----+         |         |
+    |         |         |         |         |         |         |         |         |
+    V         V         V         V         V         V         V         |         |
++-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+
+|       | |       | |       | |       | |       | |       | |       | |       | |       |
+| PLC 1 | | PLC 2 | | PLC 3 | | PLC 4 | | PLC 5 | | PLC 6 | | PLC 7 | | PLC 8 | | PLC 9 |
+|       | |       | |       | |       | |       | |       | |       | |       | |       |
++-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+ +-------+
+....
+
+[NOTE.speaker]
+--
+* TsFile erlaubt das Schreiben von Time-Series Daten auf dem Edge Gateway oder der SPS direkt
+* Hoch-Komprimierte Datenerfassung vor allem da interessant, wo der Uplink problematisch ist
+** LoRaWan, GRPC -> Mobile Narrow-Band Internet connection
+** Zeit/Ortsabhängige Connectivity -> Schiffe, LWK
+--
+
+== Timecho Lösungsszenario
+
+* Nutzung von TimechoDB statt Apache IoTDB
+** Basiert auf Apache IoTDB
+** Erweitert Open-Source Lösung um für Enterprise-Kunden wichtige Features
+*** Management
+*** Inkrementelles Backup
+*** Viele optionen der Replikation
+*** *AI Node*
+
+[NOTE.speaker]
+--
+* Optionen der Replikation:
+** Sammeln auf der Produktionslinie: Alle daten alle 200ms sichern für einen Monat
+** Replikation auf Standort Ebene: Reduzierte Anzahl an Datenpunkten, aggregiert auf Minuten, Sichern für 10 Jahre
+** Replikation in die Cloud: Nochmals reduzierte Anzahl Metriken, aggregiert auf Stunden, Sichern für Immer
+* AI Node:
+** Laufen lassen von vor-trainierten Machine-Learning modellen direkt innerhalb der DB
+** In Kombination mit Pipelines, ein sehr mächtiges Werkzeug
+--
+
+== Fazit
+
+* Wir haben alle Werkzeuge um die meisten Probleme der OT schon heute zu lösen
+* Erheblicher Performance Gewinn
+* Erhebliche Kostenreduktion
+* Erhöhte Ausfallsicherheit
+* Erhöhte Skalierbarkeit
+* Wesentlich mehr Möglichkeiten
+
+[NOTE.speaker]
+--
+* Momentan werden viele Initiativen und Innovationen schlichtweg nicht angegangen, weil die klassischen Systeme es nicht hergeben.
+* Problem:
+** OT Welt kennt diese Lösungen nicht und hat keiner Erfahrung damit
+** OT Welt nutzt eigentlich überhaupt kein Consulting, wie es die IT Welt tut
+--
+
+== Danke für's Zuhören
+
+* Fragen?
+* Kontaktiert mich über:
+** christofer.dutz@timecho.com
+** LinkedIn
+// TODO: Make links
+*** Christofer Dutz
+*** Timecho
+*** Apache IoTDB
+*** Apache PLC4X
+
+image::questions3.jpg[canvas]
