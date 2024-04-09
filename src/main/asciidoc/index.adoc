@@ -85,6 +85,7 @@ image::christofer-dutz.jpg[float=right,width=300]
 * Via Maven in RevealJS Präsentation kompiliert
 * Nicht ganz so hübsch
 * Total open-source ;-)
+** https://github.com/chrisdutz/presentation-2024-javaland
 
 [NOTE.speaker]
 --
@@ -97,7 +98,7 @@ image::christofer-dutz.jpg[float=right,width=300]
 
 * Wer von euch hat schon:
 ** In der Automatisierungsindustrie gearbeitet?
-** Kennst sich mit den Software-Lösungen der OT Welt aus?
+** Kennt sich mit den Software-Lösungen der OT Welt aus?
 ** Kennt sich mit PLCs/SPSen und deren Ökosystemen aus?
 ** Kennt/Hat schon mal gehört von:
 *** Apache PLC4X
@@ -122,7 +123,7 @@ image::christofer-dutz.jpg[float=right,width=300]
 --
 --
 
-== Beispiel: Autoindustrie
+== [.white]#Beispiel: Automobilindustrie#
 
 image::Autoindustrie.jpg[canvas]
 
@@ -131,7 +132,7 @@ image::Autoindustrie.jpg[canvas]
 * Stellvertretend für alle Industrien
 --
 
-== Situation in der Produktion früher
+== [.red]#Situation in der Produktion früher#
 
 image::VW-Kaefer.jpg[canvas]
 
@@ -150,7 +151,7 @@ image::VW-Kaefer.jpg[canvas]
 * MES = Manufacturing Execution System
 --
 
-== Situation in der Produktion in den 90ern
+== [.red]#Situation in der Produktion in den 90ern#
 
 image::VW-Golf-1.jpg[canvas]
 
@@ -610,11 +611,11 @@ image::Enterprise-Integration-Patterns.jpg[height=600px]
 * Fragen?
 * Kontaktiert mich über:
 ** christofer.dutz@timecho.com
-** LinkedIn
-// TODO: Make links
-*** Christofer Dutz
-*** Timecho
-*** Apache IoTDB
-*** Apache PLC4X
+** https://www.linkedin.com/in/christofer-dutz/
+* Weitere Infos:
+** https://www.timecho-global.com/
+** https://iotdb.apache.org/
+** https://tsfile.apache.org/
+** https://plc4x.apache.org/
 
-image::questions3.jpg[canvas]
+//image::questions3.jpg[canvas]
