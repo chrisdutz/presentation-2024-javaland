@@ -17,14 +17,13 @@
 
 -->
 
-# Die eierlegende Wollmilchsau des Industrial IoT
+# MES Systeme auf basis von Java
 
-Bei Timecho arbeiten wir zurzeit daran aus verschiedenen Open-Source-Projekten, wie Apache PLC4X, Apache IoTDB und anderen, ein installierbares Produkt (nicht im kaufmännischen Sinne) zu entwickeln, das in der Lage ist, große Mengen an Daten aus technischen Anlagen zu gewinnen, zu speichern, zu verarbeiten, aber auch zurück zu schreiben. Es soll als Plattform dienen, um eine große Vielzahl an industriellen Use Cases umsetzen zu können. Vom einfachen Dashboard bis hin zu verteilten Manufacturing Execution Systems ist damit so ziemlich alles möglich.
 
-In diesem Talk wollen wir euch dieses System vorstellen sowie einige Beispiel-Use-Cases, die sich damit realisieren ließen.
 
 ## Bauen der Präsentation
 
-    mvn clean install 
+    mvn clean package 
 
-Danach liegt die lauffähige Präsentation in `target/die-eierlegende-wollmilchsau-des-industrial-iot-1.0.0-SNAPSHOT/index.html`
+Danach liegt die lauffähige Präsentation in 
+`target/mes-systeme-auf-basis-von-java-microservices-1.0.0-SNAPSHOT/index.html`
